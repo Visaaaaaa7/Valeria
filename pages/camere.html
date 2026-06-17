@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Camere - Panorama Cahul</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        .nav-links a, .nav-right a, .hero-cta-wrapper a, .rooms-preview-grid a, .room-booking-bar a {
+            text-decoration: none !important;
+        }
+
+        #contactModal .modal-content {
+            background-color: #2b1f17 !important;
+            border: 1px solid #8d6e53 !important;
+            color: #ffffff !important;
+        }
+        #contactModal .modal-header {
+            border-bottom: 1px solid #4a3629 !important;
+            background-color: #201610 !important;
+        }
+        #contactModal .modal-footer {
+            border-top: 1px solid #4a3629 !important;
+            background-color: #201610 !important;
+        }
+        #contactModal .text-muted { color: #c5b3a6 !important; }
+        #contactModal .text-dark { color: #ffffff !important; }
+        #contactModal .bg-light { background-color: #3d2d22 !important; }
+        #contactModal .modal-body i { color: #d4af37 !important; }
+        #contactModal .btn-custom-outline {
+            border: 1px solid #8d6e53;
+            color: #ffffff;
+            background: transparent;
+        }
+        #contactModal .btn-custom-outline:hover { background: #4a3629; color: #ffffff; }
+        #contactModal .btn-custom-filled {
+            background-color: #8d6e53;
+            color: #ffffff;
+            border: none;
+        }
+        #contactModal .btn-custom-filled:hover { background-color: #705640; color: #ffffff; }
+
+        .burger-menu {
+    display: none;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 90px;
+    height: 35px;
+    z-index: 1500;
+    margin: 10px auto 0 auto;
+
+    background-color: rgba(25, 18, 14, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50px;
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    padding: 0 18px;
+    transition: all 0.2s ease;
+}
+
+.burger-menu:hover {
+    background-color: rgba(25, 18, 14, 0.85);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+        
+        .burger-menu span {
+    display: block;
+    height: 2px;
+    width: 22px;
+    background-color: #ffffff;
+    transition: all 0.3s ease-in-out;
+}
+
+        @media (min-width: 992px) {
+            .nav-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .nav-links { order: 1; }
+            .nav-right  { order: 2; }
+        }
+
+        @media (max-width: 991px) {
+            .burger-menu { display: flex; }
+
+            .nav-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                position: relative;
+                padding-top: 15px;
+            }
+
+            .nav-right {
+                display: flex;
+                justify-content: center;
+                gap: 15px;
+                width: 100%;
+                margin-bottom: 5px;
+                order: 1;
+            }
+
+            .burger-menu { order: 2; }
+
+            .nav-links {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                max-width: 90%;
+                margin: 20px auto 0 auto;
+                gap: 12px;
+                order: 3;
+
+                max-height: 0;
+                opacity: 0;
+                overflow: hidden;
+                transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            }
+
+            .nav-links a {
+                display: block;
+                width: 100%;
+                padding: 14px 0;
+                text-align: center;
+                color: #ffffff !important;
+                font-weight: bold;
+                font-size: 16px;
+                background-color: rgba(25, 18, 14, 0.65) !important;
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                border-radius: 50px;
+                backdrop-filter: blur(12px) saturate(120%);
+                -webkit-backdrop-filter: blur(12px) saturate(120%);
+                transition: all 0.2s ease;
+            }
+
+            .nav-links a.active,
+            .nav-links a:hover {
+                background-color: rgba(25, 18, 14, 0.85) !important;
+                border-color: rgba(255, 255, 255, 0.35);
+            }
+
+            .nav-links.active {
+                max-height: 350px;
+                opacity: 1;
+            }
+
+            .burger-menu.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+            .burger-menu.open span:nth-child(2) { opacity: 0; }
+            .burger-menu.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <nav class="nav-container">
+
+            <div class="nav-right">
+                <a href="#" class="phone-link" data-bs-toggle="modal" data-bs-target="#contactModal">+373 690 215</a>
+                <a href="./contacte.html" class="btn-contact">Contacte</a>
+            </div>
+
+            <div class="burger-menu" id="burgerToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div class="nav-links" id="navLinks">
+                <a href="../index.html">Home</a>
+                <a href="./camere.html" class="active">Camere</a>
+                <a href="./facilitati.html">Facilități</a>
+                <a href="./rezervatie.html">Rezervație</a>
+            </div>
+
+        </nav>
+    </header>
+
+    <section class="hero-block">
+        <div class="hero-cta-wrapper">
+            <a href="./rezervatie.html" class="btn-reserve">rezervație</a>
+        </div>
+    </section>
+
+    <main class="rooms-page-container">
+        
+        <section class="rooms-preview-section">
+            <h2 class="section-title-left">Despre camere:</h2>
+            <div class="rooms-preview-grid">
+                <a href="#room-twin" class="preview-card" style="text-decoration: none; display: block; color: inherit;">
+                    <img src="../assets/images/twin.jpg" alt="Camera Twin">
+                    <div class="preview-card-title">Camera Twin</div>
+                </a>
+                <a href="#room-double" class="preview-card" style="text-decoration: none; display: block; color: inherit;">
+                    <img src="../assets/images/double.jpg" alt="Camera Double">
+                    <div class="preview-card-title">Camera Double</div>
+                </a>
+                <a href="#room-single" class="preview-card" style="text-decoration: none; display: block; color: inherit;">
+                    <img src="../assets/images/single.jpg" alt="Camera Single">
+                    <div class="preview-card-title">Camera Single</div>
+                </a>
+            </div>
+        </section>
+
+        <section class="rooms-catalog-section">
+            <h2 class="section-title-left">Catalog:</h2>
+
+            <div class="catalog-item" id="room-twin">
+                <h3 class="room-title">Camera Twin:</h3>
+                <div class="room-card-detailed">
+                    <div class="room-image-side">
+                        <img src="../assets/images/twin.jpg" alt="Camera Twin">
+                    </div>
+                    <div class="room-info-side">
+                        <p class="room-description">
+                            Ideală pentru prieteni, colegi de afaceri sau familie, această cameră îmbină perfect estetica naturală cu facilitățile premium. Luminoasă, spațioasă și decorată în tonuri calde de lemn, camera vă oferă refugiul perfect după o zi plină. Relaxați-vă admirând apusul direct prin ferestrele mari, care deschid o panoramă superbă asupra împrejurimilor.
+                        </p>
+                        <div class="room-amenities">
+                            <p>Ce include camera:</p>
+                            <ul>
+                                <li>Două paturi single confortabile, cu saltele ortopedice</li>
+                                <li>Smart TV & Wi-Fi de mare viteză</li>
+                                <li>Baie privată modernă cu articole de igienă incluse</li>
+                                <li>Zonă de ceai/cafea și minibar</li>
+                                <li>Aer condiționat individual</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="room-booking-bar">
+                    <div class="room-price">
+                        Preț: de la 1200 MDL / noapte <br>
+                        <span>(Mic dejun inclus în preț)</span>
+                    </div>
+                    <a href="./rezervatie.html" class="btn-catalog-reserve">rezervație</a>
+                </div>
+            </div>
+
+            <div class="catalog-item" id="room-double">
+                <h3 class="room-title">Camera Double:</h3>
+                <div class="room-card-detailed">
+                    <div class="room-image-side">
+                        <img src="../assets/images/double.jpg" alt="Camera Double">
+                    </div>
+                    <div class="room-info-side">
+                        <p class="room-description">
+                            Perfectă pentru cupluri sau pentru cei care adoră spațiul și confortul absolut. Această cameră impresionează prin designul său cald, cu accente boho-chic și elemente din lemn masiv. Lumina naturală care inundă încăperea și priveliștea relaxantă creează o atmosferă intimă și primitoare, transformând fiecare seară petrecută la noi într-o poveste frumoasă.
+                        </p>
+                        <div class="room-amenities">
+                            <p>Ce include camera:</p>
+                            <ul>
+                                <li>Un pat matrimonial generos (King Size) cu lenjerie premium</li>
+                                <li>Smart TV & Wi-Fi de mare viteză pentru relaxare totală</li>
+                                <li>Baie modernă spațioasă cu halate și cosmetice incluse</li>
+                                <li>Zonă de relaxare, aparat de cafea și minibar</li>
+                                <li>Sistem de climatizare individual și ventilator de tavan stilat</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="room-booking-bar">
+                    <div class="room-price">
+                        Preț: de la 1500 MDL / noapte <br>
+                        <span>(Mic dejun și acces la facilitățile hotelului incluse)</span>
+                    </div>
+                    <a href="./rezervatie.html" class="btn-catalog-reserve">rezervație</a>
+                </div>
+            </div>
+
+            <div class="catalog-item" id="room-single">
+                <h3 class="room-title">Camera Single:</h3>
+                <div class="room-card-detailed">
+                    <div class="room-image-side">
+                        <img src="../assets/images/single.jpg" alt="Camera Single">
+                    </div>
+                    <div class="room-info-side">
+                        <p class="room-description">
+                            Alegerea ideală pentru călătorii singuri, oamenii de afaceri sau cei care caută un moment de liniște totală. Deși compactă, camera impresionează prin confortul său de top și lumina naturală caldă. Piesa de rezistență este fereastra panoramică uriașă, ideală pentru a savura cafeaua de dimineață în timp ce admirați peisajul spectaculos din jur.
+                        </p>
+                        <div class="room-amenities">
+                            <p>Ce include camera:</p>
+                            <ul>
+                                <li>Un pat single confortabil, cu lenjerie moale și perne ergonomice</li>
+                                <li>Smart TV compact & Wi-Fi de mare viteză pentru lucru sau relaxare</li>
+                                <li>Baie privată modernă cu set complet de prosoape și cosmetice</li>
+                                <li>Zonă de ceai/cafea poziționată perfect lângă geam</li>
+                                <li>Sistem modern de aer condiționat pentru climatul tău ideal</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="room-booking-bar">
+                    <div class="room-price">
+                        Preț: de la 900 MDL / noapte <br>
+                        <span>(Mic dejun delicios inclus în preț)</span>
+                    </div>
+                    <a href="./rezervatie.html" class="btn-catalog-reserve">rezervație</a>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <section class="info-section">
+        <h2 class="info-title">Toate informațiile principale</h2>
+        <div class="info-container">
+            <div class="info-column">
+                <h3>Ways to</h3>
+                <div class="payment-icons">
+                    <span style="font-size:14px; font-weight:bold; letter-spacing:1px;">VISA MasterCard PayPal</span>
+                </div>
+                <div class="info-links-grid">
+                    <a href="#">Here to Help</a>
+                    <a href="#">Delivery & Returns</a>
+                </div>
+            </div>
+            <div class="vertical-divider"></div>
+            <div class="info-column">
+                <h3>Spread The</h3>
+                <div class="promo-badges">
+                    <span class="badge-text">PANORAMA Credit Card</span>
+                    <span class="badge-text">clearpay</span>
+                    <span class="badge-text">Pay in 3</span>
+                </div>
+                <div class="info-links-grid">
+                    <a href="#">Shopping with Us</a>
+                    <a href="#">More from</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-top-row">
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="app-stores">
+                    <a href="#" class="store-btn">
+                        <i class="fab fa-apple"></i>
+                        <span>Download on the<br><b>App Store</b></span>
+                    </a>
+                    <a href="#" class="store-btn">
+                        <i class="fab fa-google-play"></i>
+                        <span>GET IT ON<br><b>Google Play</b></span>
+                    </a>
+                </div>
+            </div>
+            <hr class="footer-line">
+            <div class="footer-bottom-row">
+                <div class="copyright">© 2026 Panorama Cahul. Toate drepturile rezervate.</div>
+                <div class="legal-links">
+                    <a href="#">Terms & Conditions</a>
+                    <a href="#">Privacy</a>
+                    <a href="#">Cookies</a>
+                    <a href="#">Manage cookies</a>
+                    <a href="#">Accessibility</a>
+                    <a href="#">Modern Slavery Act</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="contactModalLabel"><i class="fas fa-hotel me-2"></i> Contacte Panorama Cahul</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body p-4">
+            <p class="text-muted mb-4">Suntem la dispoziția dumneavoastră pentru orice detalii sau rezervări directe.</p>
+            <div class="d-flex align-items-center mb-3">
+                <div class="bg-light p-3 rounded-circle me-3">
+                    <i class="fas fa-phone-alt fa-lg"></i>
+                </div>
+                <div>
+                    <small class="text-muted d-block">Let's Talk / Telefon</small>
+                    <a href="tel:+373690215" class="text-decoration-none fw-bold fs-5 text-dark" style="color:#ffffff !important;">+373 690 215</a>
+                </div>
+            </div>
+            <div class="d-flex align-items-center mb-3">
+                <div class="bg-light p-3 rounded-circle me-3">
+                    <i class="fas fa-envelope fa-lg"></i>
+                </div>
+                <div>
+                    <small class="text-muted d-block">E-mail</small>
+                    <a href="mailto:info@panoramacahul.md" class="text-decoration-none fw-bold text-dark" style="color:#ffffff !important;">info@panoramacahul.md</a>
+                </div>
+            </div>
+            <div class="d-flex align-items-center">
+                <div class="bg-light p-3 rounded-circle me-3">
+                    <i class="fas fa-map-marker-alt fa-lg"></i>
+                </div>
+                <div>
+                    <small class="text-muted d-block">Adresă Complex</small>
+                    <span class="fw-bold text-dark">Mun. Cahul, Republica Moldova</span>
+                </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-custom-outline" data-bs-dismiss="modal">Închide</button>
+            <a href="tel:+373690215" class="btn btn-custom-filled"><i class="fas fa-phone me-1"></i> Apeleză Acum</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.rooms-preview-grid a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetElement = document.querySelector(this.getAttribute('href'));
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const burger   = document.getElementById('burgerToggle');
+            const navLinks = document.getElementById('navLinks');
+
+            burger.addEventListener('click', () => {
+                burger.classList.toggle('open');
+                navLinks.classList.toggle('active');
+            });
+
+            document.querySelectorAll('#navLinks a').forEach(link => {
+                link.addEventListener('click', () => {
+                    burger.classList.remove('open');
+                    navLinks.classList.remove('active');
+                });
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
